@@ -1,0 +1,58 @@
+﻿@model DBSystem.Entities.Producto
+
+<div id="dialogAdd" title="Registar Producto">
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Producto</legend>
+
+        <div class="editor-label">
+            <label for="CategoriaId">Categoria</label>
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CategoriaId")
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Codigo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Codigo)
+            @Html.ValidationMessageFor(model => model.Codigo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Descripcion)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Descripcion)
+            @Html.ValidationMessageFor(model => model.Descripcion)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Precio)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Precio)
+            @Html.ValidationMessageFor(model => model.Precio)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Stock)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Stock)
+            @Html.ValidationMessageFor(model => model.Stock)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Descontinuado)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Descontinuado)
+            @Html.ValidationMessageFor(model => model.Descontinuado)
+        </div>
+    </fieldset>
+}
+</div>

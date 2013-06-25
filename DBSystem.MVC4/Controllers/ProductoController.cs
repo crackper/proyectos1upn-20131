@@ -15,13 +15,16 @@ namespace DBSystem.MVC4.Controllers
         [Dependency]
         public IProductoBL ProductoBL { get; set; }
 
+        [Dependency]
+        public ICategoriaBL CategoriaBL { get; set; }
+
         public ProductoController()
         {
-            using (IUnityContainer container = new UnityContainer())
-            {
-                container.LoadConfiguration();
-                container.BuildUp(this.GetType(), this);
-            }
+            //using (IUnityContainer container = new UnityContainer())
+            //{
+            //    container.LoadConfiguration();
+            //    container.BuildUp(this.GetType(), this);
+            //}
         }
 
         //
@@ -33,6 +36,33 @@ namespace DBSystem.MVC4.Controllers
             
             return View(productos);
         }
+
+        [HttpPost]
+        public ActionResult Index( string criterio="")
+        {
+            var productos = ProductoBL.GetFromProductoByCriterio(criterio);
+
+            return Request.IsAjaxRequest() ? 
+                        (ActionResult)PartialView("_resultProductos",productos): 
+                        View(productos);
+        }
+
+        public ActionResult Details(Int32 id)
+        {
+            var producto = ProductoBL.GetFromProductoById(id);
+
+            return PartialView("_details", producto);
+        }
+
+        public ActionResult Add()
+        {
+            var categorias = CategoriaBL.GetAllFromCategoria();
+
+            ViewData["CategoriaId"] = new SelectList(categorias, "id", "descripcion");
+
+            return PartialView("_add");
+        }
+
 
     }
 }
