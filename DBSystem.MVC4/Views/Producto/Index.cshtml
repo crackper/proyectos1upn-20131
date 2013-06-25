@@ -5,7 +5,9 @@
 
     AjaxOptions ajaxopt = new AjaxOptions() 
     {
-        UpdateTargetId = "listProductos"
+        UpdateTargetId = "listProductos",
+        OnSuccess = "OnSuccessList",
+        OnBegin = "OnBeginList",
     };
 }
 
@@ -18,6 +20,14 @@
                 modal:true
             });
         });*/
+        function OnSuccessList(data) {
+            $('#listProductos').fadeIn("slow");
+        }
+
+        function OnBeginList(data) {
+            $('#listProductos').fadeOut("slow");
+        }
+
 
         function OnSuccessDetails(data) {
             $('#frmDetails').dialog({
@@ -40,7 +50,8 @@
                 width: 350,
                 buttons: {
                     'Guardar': function () {
-                        $("#frmCreate").submit();
+                        $.validator.unobtrusive.parse($('#frmCreate'));
+                        $("#frmCreate").submit();                        
                     },
                     'Cerrar': function () {
                         $(this).dialog('close');                        
@@ -58,6 +69,26 @@
             if (data.ok==true) {
                 $('#frmAdd').dialog('close');
             }
+        }
+
+        function OnSuccessEdit(data) {
+            $('#frmEdit').dialog({
+                modal: true,
+                width: 350,
+                buttons: {
+                    'Guardar': function () {
+                        $.validator.unobtrusive.parse($('#frmEditar'));
+                        $("#frmEditar").submit();
+                    },
+                    'Cerrar': function () {
+                        $(this).dialog('close');
+                    }
+                },
+                close: function () {
+                    $(this).parent().remove();
+                    $(this).remove();
+                }
+            });
         }
     </script>
 }
@@ -79,5 +110,6 @@
 
 <div id="details"></div>
 <div id="add"></div>
+<div id="edit"></div>
 
 

@@ -51,7 +51,11 @@
             @Html.DisplayFor(modelItem => item.Descontinuado)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Ajax.ActionLink("Editar","Index",new AjaxOptions(){
+                    UpdateTargetId = "edit",
+                    Url = Url.Action("Edit", new { id = item.Id }),
+                    OnSuccess = "OnSuccessEdit"
+                }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
             @Ajax.ActionLink("Ver detalles","Index",new AjaxOptions(){

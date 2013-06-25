@@ -459,6 +459,7 @@
     <Content Include="Views\Producto\_Productos.cshtml" />
     <Content Include="Views\Producto\_details.cshtml" />
     <Content Include="Views\Producto\_add.cshtml" />
+    <Content Include="Views\Producto\_edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

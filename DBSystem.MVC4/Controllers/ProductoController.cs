@@ -82,5 +82,15 @@ namespace DBSystem.MVC4.Controllers
             return Json(rpt, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Edit(Int32 id)
+        {
+            var categorias = CategoriaBL.GetAllFromCategoria();
+            var producto = ProductoBL.GetFromProductoById(id);
+
+            ViewData["CategoriaId"] = new SelectList(categorias, "id", "descripcion",producto.CategoriaId);
+
+            return PartialView("_edit",producto);
+        }
+
     }
 }
