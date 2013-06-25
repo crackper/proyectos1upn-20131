@@ -22,7 +22,7 @@ namespace DBSystem.Repository
                         select p;
             }           
 
-            return query.ToList();
+            return query.OrderBy(p=>p.Id).Take(10).Skip(0).ToList();
         }
 
         public Producto GetFromProductoById(int id)

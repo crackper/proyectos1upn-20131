@@ -23,6 +23,8 @@ namespace DBSystem.MVC4
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            Bootstrapper.Initialise();
         }
     }
 }

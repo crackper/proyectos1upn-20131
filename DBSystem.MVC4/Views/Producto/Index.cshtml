@@ -2,62 +2,82 @@
 
 @{
     ViewBag.Title = "Index";
+
+    AjaxOptions ajaxopt = new AjaxOptions() 
+    {
+        UpdateTargetId = "listProductos"
+    };
+}
+
+@section scripts{
+    <script type="text/javascript">
+
+        /*$(function () {
+            $('#details').dialog({
+                autoOpen:false,
+                modal:true
+            });
+        });*/
+
+        function OnSuccessDetails(data) {
+            $('#frmDetails').dialog({
+                modal: true,
+                buttons: {
+                    'Cerrar': function () {
+                        $(this).dialog('close')
+                    }
+                },
+                close: function () {
+                    $(this).parent().remove();
+                    $(this).remove();
+                }
+            });
+        }
+
+        function OnSuccessAdd(data) {
+            $('#frmAdd').dialog({
+                modal: true,
+                width: 350,
+                buttons: {
+                    'Guardar': function () {
+                        $("#frmCreate").submit();
+                    },
+                    'Cerrar': function () {
+                        $(this).dialog('close');                        
+                    }
+                },
+                close:function(){
+                    $(this).parent().remove();
+                    $(this).remove();
+                }
+            });
+        }
+
+        function OnSuccessCreate(data)
+        {
+            if (data.ok==true) {
+                $('#frmAdd').dialog('close');
+            }
+        }
+    </script>
 }
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CategoriaId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Codigo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Precio)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Stock)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Descontinuado)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CategoriaId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Codigo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Precio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Stock)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Descontinuado)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+@using (Ajax.BeginForm("Index",ajaxopt))
+{
+    <fieldset>
+        <legend>Buscar Producto</legend>
+        <b>Criterio:</b>
+        @Html.TextBox("criterio")
+        <input type="submit" value="Buscar" />
+    </fieldset>
+    <div id="listProductos">
+    @Html.Partial("_Productos", Model)
+    </div>
 }
 
-</table>
+<div id="details"></div>
+<div id="add"></div>
+
+

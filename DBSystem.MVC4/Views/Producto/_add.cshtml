@@ -1,0 +1,67 @@
+﻿@model DBSystem.Entities.Producto
+
+@{
+    var ajaxopt = new AjaxOptions() { 
+        Url = Url.Action("Add"),
+        OnSuccess = "OnSuccessCreate",
+        InsertionMode = InsertionMode.Replace  
+    };    
+}
+
+<div id="frmAdd" title="Nuevo Producto">
+@using (Ajax.BeginForm(null,null,ajaxopt,new{id="frmCreate"})) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Producto</legend>
+
+        <div class="editor-label">
+            <label for="CategoriaId">Categoria</label>
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CategoriaId")
+            @Html.ValidationMessageFor(model => model.CategoriaId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Codigo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Codigo)
+            @Html.ValidationMessageFor(model => model.Codigo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Descripcion)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Descripcion)
+            @Html.ValidationMessageFor(model => model.Descripcion)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Precio)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Precio)
+            @Html.ValidationMessageFor(model => model.Precio)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Stock)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Stock)
+            @Html.ValidationMessageFor(model => model.Stock)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Descontinuado)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Descontinuado)
+            @Html.ValidationMessageFor(model => model.Descontinuado)
+        </div>
+    </fieldset>
+}
+</div>

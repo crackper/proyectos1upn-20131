@@ -1,0 +1,50 @@
+﻿@model DBSystem.Entities.Producto
+
+<div id="frmDetails" title="@Model.Codigo >::> @Model.Descripcion" >
+
+<fieldset>
+    <legend>Producto</legend>
+
+    <div class="display-label">
+         Categoria
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Categoria.descripcion)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Codigo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Codigo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Descripcion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Descripcion)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Precio)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Precio)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Stock)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Stock)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Descontinuado)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Descontinuado)
+    </div>
+</fieldset>
+</div>
