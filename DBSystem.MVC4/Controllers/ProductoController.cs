@@ -63,6 +63,65 @@ namespace DBSystem.MVC4.Controllers
             return PartialView("_add");
         }
 
+        [HttpPost]
+        public ActionResult Add(Producto producto)
+        {
+            var ok = false;
+            var msg = "ERROR";
 
+            if (ModelState.IsValid)
+            {
+                ProductoBL.AddProducto(producto);
+                ok = true;
+                msg = "Producto Guardado correctamente";
+            }
+
+            var rpt = new 
+            {
+                ok = ok,
+                msg = msg
+            };
+
+            return Json(rpt, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Delete(Int32 id)
+        {
+            ProductoBL.RemoveProducto(id);
+            var productos = ProductoBL.GetFromProductoByCriterio("");
+            return PartialView("_resultProductos", productos);
+        }
+
+        public ActionResult Edit(Int32 id)
+        { 
+            var producto = ProductoBL.GetFromProductoById(id);
+            var categorias = CategoriaBL.GetAllFromCategoria();
+
+            ViewData["CategoriaId"] = new SelectList(categorias, "id", "descripcion",producto.CategoriaId);
+
+            return PartialView("_edit", producto);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Producto producto)
+        {
+            var ok = false;
+            var msg = "ERROR";
+
+            if (ModelState.IsValid)
+            {
+                ProductoBL.UpdateProducto(producto);
+                ok = true;
+                msg = "Producto Actualizado correctamente";
+            }
+
+            var rpt = new
+            {
+                ok = ok,
+                msg = msg
+            };
+
+            return Json(rpt, JsonRequestBehavior.AllowGet);
+        }
     }
 }

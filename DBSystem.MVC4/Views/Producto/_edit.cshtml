@@ -2,13 +2,17 @@
 
 @{
     var ajaxoption = new AjaxOptions() { 
-        Url = Url.Action("Add"),
-        OnSuccess = "OnSuccessCreate"
+        Url = Url.Action("Edit"),
+        OnSuccess = "OnSuccessUpdate"
     };
  }
 
-<div id="dialogAdd" title="Registar Producto">
-@using (Ajax.BeginForm(null, null, ajaxoption, new {id = "frmCreate",name="frmCreate" }))
+<div id="dialogEdit" title="@Model.Codigo ::> @Model.Descripcion">
+@using (Ajax.BeginForm(null, 
+                       null,
+                       ajaxoption, 
+                       new {id = "frmEdit",name="frmEdit" }
+                       ))
 {
     @Html.ValidationSummary(true)
 

@@ -34,7 +34,8 @@
                         $(this).dialog('close');
                     },
                     'Guardar': function () {
-                        alert("Guardamos");
+                        $.validator.unobtrusive.parse('#frmCreate');
+                        $("#frmCreate").submit();
                     }
                 },
                 close: function () {
@@ -42,6 +43,44 @@
                     $(this).remove();
                 }
             });
+        }
+
+        function OnSuccessCreate(data) {
+            if (data.ok == "true") {
+                $("#dialogAdd").dialog('close');
+            }
+            else {
+                alert(data.msg);
+            }
+        }
+
+        function OnSuccessEdit(data) {
+            $("#dialogEdit").dialog({
+                modal: true,
+                width: 350,
+                buttons: {
+                    'Cerrar': function () {
+                        $(this).dialog('close');
+                    },
+                    'Guardar': function () {
+                        $.validator.unobtrusive.parse('#frmEdit');
+                        $("#frmEdit").submit();
+                    }
+                },
+                close: function () {
+                    $(this).parent().remove();
+                    $(this).remove();
+                }
+            });
+        }
+
+        function OnSuccessUpdate(data) {
+            if (data.ok == "true") {
+                $("#dialogEdit").dialog('close');
+            }
+            else {
+                alert(data.msg);
+            }
         }
         
     </script>
@@ -73,4 +112,5 @@
 }
 <div id="upDetails"></div>
 <div id="showAdd"></div>
+<div id="upEdit"></div>
 

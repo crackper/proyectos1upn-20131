@@ -2,7 +2,7 @@
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CategoriaId)
+            Categoria
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Codigo)
@@ -25,7 +25,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.CategoriaId)
+            @Html.DisplayFor(modelItem => item.Categoria.descripcion)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Codigo)
@@ -43,15 +43,23 @@
             @Html.DisplayFor(modelItem => item.Descontinuado)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id }) |
+            @Ajax.ActionLink("Editar", "Index", new AjaxOptions() {
+                  Url = Url.Action("Edit", new { id = item.Id }),
+                  UpdateTargetId="upEdit",
+                  OnSuccess = "OnSuccessEdit"
+            }) |          
 
             @Ajax.ActionLink("Ver Detalles", "Index", new AjaxOptions() {
                   Url = Url.Action("Details", new { id = item.Id }),
                   UpdateTargetId="upDetails",
                   OnSuccess = "OnSuccessDetails"
-            })
+            }) |
+            @Ajax.ActionLink("Eliminar", "Index", new AjaxOptions()
+               {
+                   Url = Url.Action("Delete", new { id = item.Id }),
+                   UpdateTargetId = "listProductos",
+                   Confirm = "Desea Eliminar este producto?"
+               })
         </td>
     </tr>
 }
