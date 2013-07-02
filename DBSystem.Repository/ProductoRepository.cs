@@ -52,5 +52,15 @@ namespace DBSystem.Repository
                 Context.SaveChanges();
             }
         }
+
+
+        public Producto GetFromProductoByCodidgo(string codigo)
+        {
+            var query = from p in Context.Productoes
+                        where p.Codigo.Equals(codigo)
+                        select p;
+
+            return query.SingleOrDefault();
+        }
     }
 }

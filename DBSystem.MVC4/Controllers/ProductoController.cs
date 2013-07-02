@@ -92,5 +92,24 @@ namespace DBSystem.MVC4.Controllers
             return PartialView("_edit",producto);
         }
 
+        [HttpPost]
+        public ActionResult getProductoByCodigoAjax(string codigo = "")
+        {
+            var ok = false;
+            var producto = ProductoBL.GetFromProductoByCodidgo(codigo);
+
+            if (producto!=null)
+            {
+                ok = true;
+            }
+
+            var rpt = new
+            {
+                ok = ok,
+            };
+
+            return Json(rpt, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

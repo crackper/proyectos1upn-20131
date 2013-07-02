@@ -44,5 +44,11 @@ namespace DBSystem.BusinessLogic
         {
             ProductoRepository.RemoveProducto(id);
         }
+
+
+        public Producto GetFromProductoByCodidgo(string codigo)
+        {
+            return ProductoRepository.GetFromProductoByCodidgo(codigo);
+        }
     }
 }

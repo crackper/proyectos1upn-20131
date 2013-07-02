@@ -11,15 +11,13 @@
     };
 }
 
-@section scripts{
-    <script type="text/javascript">
+@if (false)
+{ 
+   <script type="text/javascript" src="../../Scripts/jquery-2.0.2-vsdoc.js"></script>
+}      
 
-        /*$(function () {
-            $('#details').dialog({
-                autoOpen:false,
-                modal:true
-            });
-        });*/
+@section scripts{
+    <script type="text/javascript">       
         function OnSuccessList(data) {
             $('#listProductos').fadeIn("slow");
         }
@@ -43,20 +41,56 @@
                 }
             });
         }
-
+        
         function OnSuccessAdd(data) {
+            var guardar = true;
+
+            $('#Codigo').focusout(function () {
+                var div = $(this).closest('.editor-field');
+                var txt = $(this);
+                if ($(this).val().length > 0) {
+                    $.post('@Url.Action("getProductoByCodigoAjax")',
+                           { codigo: $(this).val() },
+                           function (data) {
+                               if (data.ok == true) {
+                                   var msg = '<span class="msg field-validation-error">El producto ya existe</span>';
+                                   div.find('.msg').remove();
+                                   div.append(msg);
+                                   txt.addClass('input-validation-error');
+                                   $('#btnGuardar').hide();
+                                   guardar = false;
+                               } else {
+                                   div.find('.msg').remove();
+                                   txt.removeClass('input-validation-error');
+                                   guardar = true;
+                                   $('#btnGuardar').show();
+                               }
+                           },
+                           'json');
+                }
+            });
+
             $('#frmAdd').dialog({
                 modal: true,
                 width: 350,
-                buttons: {
-                    'Guardar': function () {
-                        $.validator.unobtrusive.parse($('#frmCreate'));
-                        $("#frmCreate").submit();                        
+                buttons: [
+                    {  
+                        id:'btnGuardar',
+                        text: 'Guardar',
+                        click: function () {
+                            $.validator.unobtrusive.parse($('#frmCreate'));
+                            if(guardar)
+                                $("#frmCreate").submit();  
+                        }                          
                     },
-                    'Cerrar': function () {
-                        $(this).dialog('close');                        
+                    {
+                        id:'btnCancelar',
+                        text:'Cerrar',
+                        click: function () {
+                            $(this).dialog('close');
+                        }                        
                     }
-                },
+                ],
                 close:function(){
                     $(this).parent().remove();
                     $(this).remove();

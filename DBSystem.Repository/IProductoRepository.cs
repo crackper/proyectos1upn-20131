@@ -9,6 +9,7 @@ namespace DBSystem.Repository
     public interface IProductoRepository
     {
         List<Producto> GetFromProductoByCriterio(string criterio);
+        Producto GetFromProductoByCodidgo(string codigo);
         Producto GetFromProductoById(Int32 id);
         void AddProducto(Producto producto);
         void UpdateProducto(Producto producto);
