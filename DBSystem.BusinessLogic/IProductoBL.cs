@@ -13,5 +13,6 @@ namespace DBSystem.BusinessLogic
         void AddProducto(Producto producto);
         void UpdateProducto(Producto producto);
         void RemoveProducto(Int32 id);
+        Producto GetFromProductoByCodigo(string codigo);
     }
 }

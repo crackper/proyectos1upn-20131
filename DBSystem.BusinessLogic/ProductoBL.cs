@@ -32,7 +32,19 @@ namespace DBSystem.BusinessLogic
 
         public void AddProducto(Producto producto)
         {
-            ProductoRepository.AddProducto(producto);
+            var existe = ProductoRepository.GetFromProductoByCodigo(producto.Codigo);
+
+            if (existe == null)
+            {
+                ProductoRepository.AddProducto(producto);
+            }
+            else
+	        {
+                var error = string.Format("Ya existe el producto: {0} - {1}",
+                                existe.Codigo,
+                                existe.Descripcion);
+                throw new Exception(error);
+	        }            
         }
 
         public void UpdateProducto(Producto producto)
@@ -43,6 +55,12 @@ namespace DBSystem.BusinessLogic
         public void RemoveProducto(int id)
         {
             ProductoRepository.RemoveProducto(id);
+        }
+
+
+        public Producto GetFromProductoByCodigo(string codigo)
+        {
+            return ProductoRepository.GetFromProductoByCodigo(codigo);
         }
     }
 }

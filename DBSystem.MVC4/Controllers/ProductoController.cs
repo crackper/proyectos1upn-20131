@@ -71,9 +71,17 @@ namespace DBSystem.MVC4.Controllers
 
             if (ModelState.IsValid)
             {
-                ProductoBL.AddProducto(producto);
-                ok = true;
-                msg = "Producto Guardado correctamente";
+                try
+                {
+                    ProductoBL.AddProducto(producto);
+                    ok = true;
+                    msg = "Producto Guardado correctamente";
+                }
+                catch (Exception ex)
+                {
+                    ok = false;
+                    msg = ex.Message;
+                }                
             }
 
             var rpt = new 
@@ -123,5 +131,31 @@ namespace DBSystem.MVC4.Controllers
 
             return Json(rpt, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public ActionResult validarProductoAjax(string codigo)
+        {
+            var producto = ProductoBL.GetFromProductoByCodigo(codigo);
+            var ok = false;
+            var msg = "No Existe..!!!";
+
+            if (producto !=null)
+            {
+               ok = true;
+               msg = string.Format("Ya existe el producto: {0} - {1}",
+                                producto.Codigo,
+                                producto.Descripcion); 
+            }
+
+            var rpt = new
+            {
+                ok = ok,
+                msg = msg
+            };
+
+            return Json(rpt, JsonRequestBehavior.AllowGet);
+        }
+            
+
     }
 }

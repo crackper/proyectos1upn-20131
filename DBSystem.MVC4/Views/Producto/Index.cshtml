@@ -1,13 +1,16 @@
 ﻿@model IEnumerable<DBSystem.Entities.Producto>
-
 @{
     ViewBag.Title = "Index";
 
-    var ajaxoptions = new AjaxOptions() {
+    var ajaxoptions = new AjaxOptions()
+    {
         UpdateTargetId = "listProductos"
     };
 }
-
+@if (false)
+{ 
+    <script type="text/javascript" src="../../Scripts/jquery-1.7.1-vsdoc.js"></script>
+}
 @section scripts{
     <script type="text/javascript">
         function OnSuccessDetails(data) {
@@ -26,18 +29,63 @@
         }
 
         function OnSuccessAdd(data) {
+
+            $("#Codigo").focusout(function () {
+                var div = $(this).closest('.editor-field');
+
+                if ($(this).val().length > 0) {
+
+                    $.post('@Url.Action("validarProductoAjax")',
+                            { codigo: $(this).val() },
+                            function (data) {
+                                if (data.ok == true) {
+
+                                    var error = '<span class="msg field-validation-error">' + data.msg + '</span>';
+
+                                    $('#Codigo').addClass('input-validation-error');
+
+                                    div.find('.msg').remove();
+                                    div.append(error);
+
+                                    $('#btnGuardar').hide();
+                                }
+                                else {
+                                    div.find('.msg').remove();
+                                    $('#Codigo').removeClass('input-validation-error');
+
+                                    $('#btnGuardar').show();
+                                }
+                            },
+                            'json');
+                }
+            });
+
             $("#dialogAdd").dialog({
                 modal: true,
                 width: 350,
-                buttons: {
-                    'Cerrar': function () {
-                        $(this).dialog('close');
-                    },
-                    'Guardar': function () {
+                buttons: [
+                {
+                    id: "btnGuardar",
+                    text: "Guardar",
+                    click: function () {
                         $.validator.unobtrusive.parse('#frmCreate');
                         $("#frmCreate").submit();
                     }
                 },
+                {
+                    id: "btnCancelar",
+                    text: "Cancelar",
+                    click: function () {
+                          $(this).dialog('close');
+                    }
+                }]
+                /*{'Cerrar': function () {
+                $(this).dialog('close');
+                },
+                'Guardar': function () {
+                $.validator.unobtrusive.parse('#frmCreate');
+                $("#frmCreate").submit();
+                }}*/,
                 close: function () {
                     $(this).parent().remove();
                     $(this).remove();
@@ -46,11 +94,17 @@
         }
 
         function OnSuccessCreate(data) {
-            if (data.ok == "true") {
+            if (data.ok == true) {
                 $("#dialogAdd").dialog('close');
             }
             else {
-                alert(data.msg);
+                var div = $("#Codigo").closest('.editor-field');
+                var error = '<span class="msg field-validation-error">' + data.msg + '</span>';
+
+                $('#Codigo').addClass('input-validation-error');
+
+                div.find('.msg').remove();
+                div.append(error);
             }
         }
 
@@ -85,24 +139,21 @@
         
     </script>
 }
-
-<h2>Index</h2>
-
+<h2>
+    Index</h2>
 <p>
     @Html.ActionLink("Create New", "Add")
-
-    @Ajax.ActionLink("Nuevo Producto", "Index", new AjaxOptions() {
-        Url = Url.Action("Add"),
-        UpdateTargetId = "showAdd",
-        OnSuccess = "OnSuccessAdd"
-    })
+    @Ajax.ActionLink("Nuevo Producto", "Index", new AjaxOptions()
+{
+    Url = Url.Action("Add"),
+    UpdateTargetId = "showAdd",
+    OnSuccess = "OnSuccessAdd"
+})
 </p>
-
-@using (Ajax.BeginForm("Index",ajaxoptions))
+@using (Ajax.BeginForm("Index", ajaxoptions))
 {
     <fieldset>
-        <legend>Buscar Producto</legend>
-        <b>Criterio:</b>
+        <legend>Buscar Producto</legend><b>Criterio:</b>
         @Html.TextBox("criterio")
         <input type="submit" name="btnBuscar" value="Buscar" />
     </fieldset>
@@ -110,7 +161,9 @@
         @Html.Partial("_resultProductos", Model)
     </div>
 }
-<div id="upDetails"></div>
-<div id="showAdd"></div>
-<div id="upEdit"></div>
-
+<div id="upDetails">
+</div>
+<div id="showAdd">
+</div>
+<div id="upEdit">
+</div>
